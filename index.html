@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Robot</title>
+    <meta name="author" content="Zack Argye" />
+    <link rel="stylesheet" href="demo.css" />
+</head>
+<body>
+    <div id="robot"></div>
+    <script src="robot.js"></script>
+    <script type="text/javascript">
+        var robot = new Robot({
+            container: "robot",
+            leftArm: "img/leftArm.png",
+            leftLeg: "img/leftLeg.png",
+            rightArm: "img/rightArm.png",
+            rightLeg: "img/rightLeg.png",
+            belly: "img/body.png",
+            head: "img/head.png"
+        });
+        robot.onReady(function() {
+            robot.addListener("leftArm", function() {
+                robot.wave(3);
+            });
+            robot.addListener("belly", function() {
+                robot.tickle(2);
+            });
+            robot.addListener("head", function() {
+                robot.dance(6);
+            });
+            robot.addListener("rightLeg", function() {
+                robot.jump();
+            });
+            robot.addListener("leftLeg", function() {
+                robot.scare();
+            });
+        });
+    </script>
+</body>
+</html>
