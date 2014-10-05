@@ -25,11 +25,12 @@ var Robot = (function() {
 		this.inAnimation   = false;
 		this.imagesLoaded  = 0;
 		this.loadListeners = [];
+
 		this.robot = document.getElementById(options.container);
 		this.robot.style.width = this.robot.style.width || "1px";
 	}
 
-	Robot.prototype.dance = function(count) {
+	Robot.prototype.dance = function(count, msg) {
 		if (this.inAnimation) return ;
 		this.inAnimation = true;
 
@@ -51,10 +52,11 @@ var Robot = (function() {
 		this.rightArm.rAnimation = waveArray;
 		this.rightArm.wave();
 
+		msg && this.popup.show(msg);
 		this._end(count);
 	}
 
-	Robot.prototype.jump = function(count) {
+	Robot.prototype.jump = function(count, msg) {
 		if (this.inAnimation) return ;
 		this.inAnimation = true;
 
@@ -71,10 +73,11 @@ var Robot = (function() {
 			this[limbs[i]].jump();
 		}
 
+		msg && this.popup.show(msg);
 		this._end(count);
 	}
 
-	Robot.prototype.scare = function() {
+	Robot.prototype.scare = function(msg) {
 		if (this.inAnimation) return ;
 		this.inAnimation = true;
 
@@ -97,19 +100,22 @@ var Robot = (function() {
 			this.head.draw();
 			this._end(1);
 		}.bind(this), 1200);
+
+		msg && this.popup.show(msg);
 	}
 
-	Robot.prototype.wave = function(count) {
+	Robot.prototype.wave = function(count, msg) {
 		if (this.inAnimation) return ;
 		this.inAnimation = true;
 
 		this.leftArm.rAnimation = animArray(count, ANIM.wave);
 		this.leftArm.wave();
 
+		msg && this.popup.show(msg);
 		this._end(count);
 	}
 
-	Robot.prototype.tickle = function(count) {
+	Robot.prototype.tickle = function(count, msg) {
 		if (this.inAnimation) return ;
 		this.inAnimation = true;
 
@@ -131,7 +137,9 @@ var Robot = (function() {
 			this.rightArm.draw();
 			this.inAnimation = false;
 			this._end(1);
-		}.bind(this), (count||1) * ANIM.time)
+		}.bind(this), (count||1) * ANIM.time);
+
+		msg && this.popup.show(msg);
 	}
 
 	Robot.prototype.addListener = function(appendage, callback) {
@@ -149,6 +157,7 @@ var Robot = (function() {
 
 	Robot.prototype._end = function(count) {
 		setTimeout(function() {
+			this.popup.hide();
 			this.inAnimation = false;
 		}.bind(this), (count||1)*ANIM.time);
 	}
@@ -181,6 +190,9 @@ var Robot = (function() {
 		this.head.elem.style[transformOrigin] = "50% 50%";
 
 		this.belly.setPosition(pos.left,pos.top);
+
+		this.popup = new Popup(pos.right + 50, pos.top - this.head.elem.height);
+		document.body.appendChild(this.popup.elem);
 	}
 
 	Robot.prototype._loadImage = function(name, path) {
@@ -276,6 +288,27 @@ var Robot = (function() {
 		  , translateY = "translateY(" + this.translateY + "px) "
 		  , scale = "scale(" + this.scale + "," + this.scale + ")";
 		this.elem.style[transform] = rotate + translateX + translateY + scale;
+	}
+
+	function Popup(left, top) {
+		this.elem = document.createElement("div");
+		this.elem.className = "popup";
+		this.elem.style.left = left + "px";
+		this.elem.style.top = top + "px";
+
+		this.text = document.createElement("div");
+		this.text.className = "popup-text";
+
+		this.elem.appendChild(this.text);
+	}
+
+	Popup.prototype.show = function(msg) {
+		this.text.innerHTML = msg;
+		this.elem.style.visibility = "visible";
+	}
+
+	Popup.prototype.hide = function() {
+		this.elem.style.visibility = "hidden";
 	}
 
 	function animArray(count, array) {

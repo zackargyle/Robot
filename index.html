@@ -22,19 +22,19 @@
         });
         robot.onReady(function() {
             robot.addListener("leftArm", function() {
-                robot.wave(3);
+                robot.wave(3, "Sup bro?");
             });
             robot.addListener("belly", function() {
-                robot.tickle(2);
+                robot.tickle(2, "Hee hee hee. That tickles!");
             });
             robot.addListener("head", function() {
                 robot.dance(6);
             });
             robot.addListener("rightLeg", function() {
-                robot.jump();
+                robot.jump(1, "WOO HOO!!!");
             });
             robot.addListener("leftLeg", function() {
-                robot.scare();
+                robot.scare("AHH! You scared me :(");
             });
         });
     </script>
