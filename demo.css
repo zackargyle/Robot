@@ -1,3 +1,17 @@
 #robot {
 	margin: 200px auto;
 }
+
+.popup {
+	position: absolute;
+	background-image: url("img/rsz_popup.png");
+	background-size: cover;
+	visibility: hidden;
+	width: 150px;
+	height: 126px;
+	text-align: center;
+}
+
+.popup-text {
+	padding: 30px 20px;
+}
