@@ -229,7 +229,11 @@ var Robot = (function() {
 
 		// Initialize
 		this.elem.style.position = "absolute";
-		this.elem.style[transition] = "transform .18s linear";
+		if (prefix === "Webkit") {
+			this.elem.style[transition] = "-webkit-transform .18s linear";
+		} else {
+			this.elem.style[transition] = "transform .18s linear";
+		}
 
 		// Add listener
 		this.elem.addEventListener(transitionEnd, this, false);
@@ -328,7 +332,7 @@ var Robot = (function() {
 	  , transform = prefix ? prefix + "Transform" : "transform"
 	  , transformOrigin = transform + "Origin"
 	  , transition = prefix ? prefix + "Transition" : "transition"
-	  , transitionEnd  = prefix ? prefix.toLowerCase() + "TransitionEnd" : "transitionend"
+	  , transitionEnd  = prefix && prefix !== "Moz" ? prefix.toLowerCase() + "TransitionEnd" : "transitionend"
 	  , touch = document.ontouchmove !== undefined;
 
 	function getPrefix() {
